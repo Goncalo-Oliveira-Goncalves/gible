@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gible — Video Editor &amp; Designer</title>
+  <meta name="description" content="Gible — Video editor and graphic designer specialising in YouTube thumbnails, DaVinci Resolve edits, and Krita artwork.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <!-- Wistia Player (one load, all 11 videos) -->
+  <script src="https://fast.wistia.com/player.js" async></script>
+  <script src="https://fast.wistia.com/embed/xtpav8lx05.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/w6omy2r9hr.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/vpty4dcrw5.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/g9yax86tkv.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/d2ohrbyx73.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/g80th8gtiq.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/sw86b37rti.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/lozg10ugan.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/chi0v4w1hx.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/axcysaxpa1.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/n8os0evy37.js" async type="module"></script>
+
+  <style>
+    :root {
+      --ink:    #0d0805;
+      --ink2:   #1A0D08;
+      --ink3:   #281b14;
+      --border: #2a1810;
+      --crimson:#CD1C10;
+      --gold:   #F7C04A;
+      --parch:  #D9A066;
+      --muted:  #8B6040;
+      --text:   #C4A882;
+      --white:  #f5ede0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--ink2); }
+    ::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(13,8,5,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 20px; color: var(--gold);
+      letter-spacing: 2px;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--parch); text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 1px; background: var(--crimson);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--crimson); border: 1px solid var(--crimson);
+      padding: 8px 20px; text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--crimson); color: var(--white); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: 'Cinzel', serif; font-size: 10px;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--crimson); margin-bottom: 14px;
+      position: relative; display: inline-block;
+    }
+    .section-eyebrow::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      height: 1px; width: 0;
+      background: var(--crimson);
+      transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .section-eyebrow.drawn::after { width: 100%; }
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      color: var(--gold); line-height: 1.15; margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 18px; color: var(--muted);
+      font-style: italic; margin-bottom: 48px;
+    }
+    hr.rune-divider {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+      margin: 0;
+      animation: divider-pulse 3s ease-in-out infinite;
+    }
+    @keyframes divider-pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 0 24px; position: relative; overflow: hidden; max-width: 100%;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(205,28,16,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .rune-ring {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none; z-index: 0;
+    }
+    .rune-ring-outer { animation: spin-slow 40s linear infinite; transform-origin: center; }
+    .rune-ring-inner { animation: spin-slow 25s linear infinite reverse; transform-origin: center; }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+    .ember {
+      position: absolute; border-radius: 50%;
+      background: var(--crimson); opacity: 0;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 0.6; }
+      80%  { opacity: 0.2; }
+      100% { opacity: 0; transform: translateY(-80vh) scale(0.3); }
+    }
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif; font-size: 11px;
+      letter-spacing: 6px; text-transform: uppercase;
+      color: var(--crimson); margin-bottom: 20px; z-index: 1;
+    }
+    .hero-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(52px, 10vw, 110px);
+      color: var(--gold); line-height: 1; margin-bottom: 20px;
+      text-shadow: 0 0 60px rgba(247,192,74,0.3); z-index: 1;
+    }
+    .hero-name .char {
+      display: inline-block; opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      animation: char-in 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    @keyframes char-in { to { opacity:1; transform:translateY(0) scale(1); } }
+    .hero-role {
+      font-family: 'Cinzel', serif; font-size: 14px;
+      letter-spacing: 6px; text-transform: uppercase;
+      color: var(--parch); margin-bottom: 48px; z-index: 1;
+    }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; z-index: 1; }
+    .btn-primary {
+      font-family: 'Cinzel', serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase;
+      background: var(--crimson); color: var(--white);
+      padding: 14px 36px; text-decoration: none; border: 1px solid var(--crimson);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary:hover { background: transparent; color: var(--crimson); }
+    .btn-secondary {
+      font-family: 'Cinzel', serif; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase;
+      background: transparent; color: var(--parch);
+      padding: 14px 36px; text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--parch); color: var(--white); }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--muted);
+      animation: bob 2s ease-in-out infinite; z-index: 1;
+    }
+    .scroll-hint::after { content: '↓'; font-size: 18px; color: var(--crimson); }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ── CURSOR EMBER TRAIL ── */
+    .cursor-ember {
+      position: fixed; pointer-events: none; border-radius: 50%;
+      z-index: 9999; animation: ember-fade 0.8s ease-out forwards;
+    }
+    @keyframes ember-fade {
+      0%  { opacity: 0.9; transform: scale(1) translateY(0); }
+      100%{ opacity: 0;   transform: scale(0.2) translateY(-18px); }
+    }
+
+    /* ── PORTFOLIO ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2px;
+    }
+    .portfolio-card {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      background: var(--ink2);
+      border: 1px solid var(--border);
+      transition: border-color 0.25s;
+    }
+    .portfolio-card:hover { border-color: var(--crimson); }
+    .portfolio-card-img {
+      width: 100%; height: 100%; object-fit: cover;
+      aspect-ratio: 16/10;
+      display: block; opacity: 0.85;
+      transition: opacity 0.3s, transform 0.4s;
+    }
+    .portfolio-card:hover .portfolio-card-img { opacity: 1; transform: scale(1.04); }
+    .portfolio-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(13,8,5,0.9) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 20px; opacity: 0; transition: opacity 0.25s;
+    }
+    .portfolio-card:hover .portfolio-card-overlay { opacity: 1; }
+    .portfolio-card-title {
+      font-family: 'Cinzel', serif; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--white);
+    }
+    .portfolio-card-type { font-size: 13px; color: var(--crimson); font-style: italic; }
+
+    /* video cards */
+    .video-card {
+      background: var(--ink2);
+      border: 1px solid var(--border);
+      transition: border-color 0.25s;
+      overflow: hidden;
+    }
+    .video-card:hover { border-color: var(--crimson); }
+    .video-card wistia-player { display: block; width: 100%; }
+    .video-card-label {
+      padding: 12px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .video-card-label span {
+      font-family: 'Cinzel', serif; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--parch);
+    }
+    .video-card-label em { font-size: 12px; color: var(--crimson); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .testimonial-card {
+      border: 1px solid var(--border); border-top: 2px solid var(--crimson);
+      padding: 24px 24px 20px; background: var(--ink2); position: relative;
+    }
+    .testimonial-card::before {
+      content: '\201C'; position: absolute; top: 12px; right: 20px;
+      font-family: 'Cinzel Decorative', serif; font-size: 64px;
+      color: var(--border); line-height: 1;
+    }
+    .testimonial-stars { color: var(--gold); font-size: 14px; margin-bottom: 10px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 16px; font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 16px; }
+    .testimonial-name { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--parch); }
+    .testimonial-tag { font-size: 12px; color: var(--muted); }
+
+    /* ── ABOUT ── */
+    .about-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 72px; align-items: center; }
+    .about-avatar { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--border); }
+    .about-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+    .stat-box { border: 1px solid var(--border); padding: 16px; text-align: center; background: var(--ink2); }
+    .stat-value { font-family: 'Cinzel Decorative', serif; font-size: 28px; color: var(--gold); transition: color 0.3s; }
+    .stat-box:hover .stat-value { color: var(--crimson); }
+    .stat-label { font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; font-family: 'Cinzel', serif; }
+
+    /* ── SERVICES ── */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .service-card {
+      border: 1px solid var(--border); padding: 36px 28px;
+      background: var(--ink2); transition: border-color 0.25s, background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--crimson); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card:hover { border-color: var(--crimson); background: rgba(205,28,16,0.04); }
+    .service-icon { font-size: 28px; margin-bottom: 16px; }
+    .service-name { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--white); margin-bottom: 10px; }
+    .service-price { font-family: 'Cinzel Decorative', serif; font-size: 28px; color: var(--gold); margin-bottom: 12px; }
+    .service-desc { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item { border: 1px solid var(--border); background: var(--ink2); }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 24px; cursor: pointer;
+      font-family: 'Cinzel', serif; font-size: 13px;
+      letter-spacing: 1px; color: var(--parch); transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--white); }
+    .faq-arrow { color: var(--crimson); font-size: 18px; transition: transform 0.25s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s;
+      font-size: 16px; color: var(--text); padding: 0 24px; border-top: 0px solid var(--border);
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 16px 24px 20px; border-top: 1px solid var(--border); }
+
+    /* ── CONTACT ── */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-method {
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid var(--border); padding: 16px 20px; background: var(--ink2);
+    }
+    .contact-method-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .contact-method-value { font-size: 15px; color: var(--parch); }
+    form { display: flex; flex-direction: column; gap: 12px; }
+    form input, form textarea {
+      background: var(--ink2); border: 1px solid var(--border);
+      color: var(--text); font-family: 'Crimson Pro', serif; font-size: 16px;
+      padding: 14px 18px; outline: none; transition: border-color 0.2s;
+    }
+    form input:focus, form textarea:focus { border-color: var(--crimson); }
+    form textarea { resize: vertical; min-height: 120px; }
+    form input::placeholder, form textarea::placeholder { color: var(--muted); }
+    form button {
+      font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; background: var(--crimson); color: var(--white);
+      border: 1px solid var(--crimson); padding: 14px; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    form button:hover { background: transparent; color: var(--crimson); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .footer-logo { font-family: 'Cinzel Decorative', serif; font-size: 16px; color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      section { padding: 70px 20px; }
+      .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 32px; }
+      .services-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Gible</span>
+  <ul class="nav-links">
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <svg class="rune-ring" width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.18;">
+    <g class="rune-ring-outer">
+      <circle cx="300" cy="300" r="280" stroke="#CD1C10" stroke-width="1" stroke-dasharray="6 14"></circle>
+      <circle cx="300" cy="300" r="265" stroke="#F7C04A" stroke-width="0.5" stroke-dasharray="2 20"></circle>
+      <g stroke="#CD1C10" stroke-width="1.5">
+        <line x1="300" y1="20" x2="300" y2="50"></line><line x1="288" y1="20" x2="312" y2="20"></line>
+        <line x1="580" y1="300" x2="550" y2="300"></line><line x1="580" y1="288" x2="580" y2="312"></line>
+        <line x1="300" y1="580" x2="300" y2="550"></line><line x1="288" y1="580" x2="312" y2="580"></line>
+        <line x1="20" y1="300" x2="50" y2="300"></line><line x1="20" y1="288" x2="20" y2="312"></line>
+        <line x1="102" y1="102" x2="118" y2="118"></line><line x1="94" y1="94" x2="104" y2="110"></line>
+        <line x1="498" y1="102" x2="482" y2="118"></line><line x1="506" y1="94" x2="496" y2="110"></line>
+        <line x1="498" y1="498" x2="482" y2="482"></line><line x1="506" y1="506" x2="496" y2="490"></line>
+        <line x1="102" y1="498" x2="118" y2="482"></line><line x1="94" y1="506" x2="104" y2="490"></line>
+      </g>
+    </g>
+    <g class="rune-ring-inner">
+      <circle cx="300" cy="300" r="220" stroke="#CD1C10" stroke-width="0.5" stroke-dasharray="3 18"></circle>
+      <polygon points="300,90 490,210 490,390 300,510 110,390 110,210" stroke="#F7C04A" stroke-width="0.6" fill="none" opacity="0.5"></polygon>
+      <polygon points="300,130 460,230 460,370 300,470 140,370 140,230" stroke="#CD1C10" stroke-width="0.4" fill="none" opacity="0.4"></polygon>
+    </g>
+  </svg>
+  <div id="embers"></div>
+  <div class="hero-eyebrow">Portfolio · Est. 2022</div>
+  <h1 class="hero-name" id="heroName">Gible</h1>
+  <div class="hero-role">Video Editor &nbsp;·&nbsp; Graphic Designer</div>
+  <p style="max-width:480px; font-size:19px; color:var(--muted); font-style:italic; margin-bottom:40px; z-index:1;">
+    Bringing your vision to life, frame by frame — with precision, creativity, and a touch of magic.
+  </p>
+  <div class="hero-btns">
+    <a href="#portfolio" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-secondary">Get in Touch</a>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<hr class="rune-divider">
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-eyebrow">§ I · The Grimoire</div>
+  <h2 class="section-title reveal">Portfolio</h2>
+  <p class="section-sub reveal">A collection of works forged in DaVinci Resolve and Krita.</p>
+  <div class="portfolio-grid reveal">
+
+    <!-- Design work -->
+    <div class="portfolio-card">
+      <img class="portfolio-card-img" src="designs/Thumbnail.png" alt="Thumbnail Design">
+      <div class="portfolio-card-overlay">
+        <div class="portfolio-card-title">Thumbnail Design</div>
+        <div class="portfolio-card-type">Graphic Design</div>
+      </div>
+    </div>
+
+    <div class="portfolio-card">
+      <img class="portfolio-card-img" src="designs/amongusfin2.3.png" alt="Among Us Graphic">
+      <div class="portfolio-card-overlay">
+        <div class="portfolio-card-title">Among Us Artwork</div>
+        <div class="portfolio-card-type">Graphic Design</div>
+      </div>
+    </div>
+
+    <div class="portfolio-card">
+      <img class="portfolio-card-img" src="designs/life.png" alt="Life Design">
+      <div class="portfolio-card-overlay">
+        <div class="portfolio-card-title">Life</div>
+        <div class="portfolio-card-type">Graphic Design</div>
+      </div>
+    </div>
+
+    <div class="portfolio-card">
+      <img class="portfolio-card-img" src="designs/video2.png" alt="Video Thumbnail">
+      <div class="portfolio-card-overlay">
+        <div class="portfolio-card-title">Video Thumbnail</div>
+        <div class="portfolio-card-type">Graphic Design</div>
+      </div>
+    </div>
+
+    <!-- Video work -->
+    <div class="video-card">
+      <style>wistia-player[media-id='xtpav8lx05']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/xtpav8lx05/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="xtpav8lx05" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='w6omy2r9hr']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/w6omy2r9hr/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="w6omy2r9hr" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='vpty4dcrw5']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/vpty4dcrw5/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="vpty4dcrw5" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='g9yax86tkv']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/g9yax86tkv/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="g9yax86tkv" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='d2ohrbyx73']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/d2ohrbyx73/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="d2ohrbyx73" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='g80th8gtiq']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/g80th8gtiq/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="g80th8gtiq" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='sw86b37rti']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/sw86b37rti/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="sw86b37rti" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='lozg10ugan']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/lozg10ugan/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="lozg10ugan" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='chi0v4w1hx']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/chi0v4w1hx/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="chi0v4w1hx" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='axcysaxpa1']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/axcysaxpa1/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="axcysaxpa1" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+    <div class="video-card">
+      <style>wistia-player[media-id='n8os0evy37']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/n8os0evy37/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
+      <wistia-player media-id="n8os0evy37" aspect="1.7777777777777777"></wistia-player>
+      <div class="video-card-label"><span>Video Edit</span><em>Video Editing</em></div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="rune-divider">
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-eyebrow">§ II · The Scrolls of Praise</div>
+  <h2 class="section-title reveal">Reviews</h2>
+  <p class="section-sub reveal">Words from those who've ventured before you.</p>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Does everything as expected and follows directions well and is very eager to communicate."</div>
+      <div class="testimonial-name">Xhyper</div>
+      <div class="testimonial-tag">Faceless YouTube Editing</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Has done an amazing job with video editing and graphic designing, must recommend! Always replies fast and handles everything correctly."</div>
+      <div class="testimonial-name">Chloe</div>
+      <div class="testimonial-tag">Video Editing &amp; Graphic Design</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Peak quality — everything I wanted, expected and more. Definitely one of the best designers in the server, and great communication."</div>
+      <div class="testimonial-name">Bebopflash</div>
+      <div class="testimonial-tag">Thumbnail Design</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Such an underrated editor. He did what I asked for. I highly recommend him."</div>
+      <div class="testimonial-name">Hamed</div>
+      <div class="testimonial-tag">Video Editing</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★☆</div>
+      <div class="testimonial-text">"Made a good graphic design poster. Solid work, delivered as requested."</div>
+      <div class="testimonial-name">Mustafa</div>
+      <div class="testimonial-tag">Graphic Design</div>
+    </div>
+  </div>
+</section>
+
+<hr class="rune-divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-layout">
+    <div>
+      <div class="about-avatar">
+        <img src="avatar.webp" alt="Gible — Video Editor &amp; Designer">
+      </div>
+    </div>
+    <div>
+      <div class="section-eyebrow">§ III · The Adventurer</div>
+      <h2 class="section-title reveal">About Me</h2>
+      <p style="margin-bottom:16px;">
+        I'm Gible — a video editor and graphic designer who's been crafting visuals since I was a kid.
+        I specialise in making content that feels alive: sharp thumbnails that stop the scroll,
+        and edits that hold attention from first frame to last.
+      </p>
+      <p style="color:var(--muted); font-style:italic;">
+        Armed with DaVinci Resolve and Krita, I adapt my style to yours —
+        whatever you imagine, I'll bring it to life.
+      </p>
+      <div class="about-stats">
+        <div class="stat-box">
+          <div class="stat-value">3+</div>
+          <div class="stat-label">Years Editing</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">5★</div>
+          <div class="stat-label">Avg. Rating</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">DR</div>
+          <div class="stat-label">DaVinci Resolve</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">Kr</div>
+          <div class="stat-label">Krita</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rune-divider">
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-eyebrow">§ IV · The Armoury</div>
+  <h2 class="section-title reveal">Services &amp; Pricing</h2>
+  <p class="section-sub reveal">Choose your weapon.</p>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <div class="service-name">Thumbnail Design</div>
+      <div class="service-price">DM for Quote</div>
+      <div class="service-desc">Eye-catching thumbnails designed to stop the scroll. Custom-made in Krita to match your channel's style.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎬</div>
+      <div class="service-name">Video Editing</div>
+      <div class="service-price">DM for Quote</div>
+      <div class="service-desc">Full video edits using DaVinci Resolve. Cuts, colour grading, music sync, effects — delivered clean and on time.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚔️</div>
+      <div class="service-name">Bundle Package</div>
+      <div class="service-price">DM for Quote</div>
+      <div class="service-desc">Thumbnail + video editing combined. Best value for creators who want a complete, consistent visual identity.</div>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:24px; font-size:14px; color:var(--muted); font-style:italic;">
+    Prices vary by scope. Reach out for a custom quote.
+  </p>
+</section>
+
+<hr class="rune-divider">
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-eyebrow">§ V · The Oracle</div>
+  <h2 class="section-title reveal">FAQ</h2>
+  <p class="section-sub reveal">Common questions, answered.</p>
+  <div class="faq-list reveal" id="faqList">
+    <div class="faq-item">
+      <div class="faq-q">What software do you use? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">I use DaVinci Resolve for video editing and Krita for graphic design and thumbnail creation. Both are industry-capable tools that let me produce high-quality work efficiently.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How long does delivery take? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">Turnaround depends on the scope of the project. Thumbnails are typically done within 24–48 hours. Video edits vary — I'll give you a clear timeline upfront so there are no surprises.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do you offer revisions? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">Yes! I want you to be fully happy with the result. I include revisions in my process — just communicate clearly what you'd like changed and I'll get it sorted.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I pay? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">Payment details are discussed after we agree on the project scope. I work with common platforms — we'll figure out what works best for both of us.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I see samples before commissioning? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">Absolutely — the portfolio above shows real work. You can also reach out directly and I can share more specific examples relevant to your project type.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What kind of projects do you take on? <span class="faq-arrow">▾</span></div>
+      <div class="faq-a">Video edits (YouTube, Shorts, Reels), thumbnail design, UGC promo content, graphic design posters and more. If you're unsure, just ask — I'm flexible.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="rune-divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow">§ VI · The Summon</div>
+  <h2 class="section-title reveal">Contact</h2>
+  <p class="section-sub reveal">Ready to begin your quest?</p>
+  <div class="contact-layout reveal">
+    <div class="contact-info">
+      <div class="contact-method">
+        <div>
+          <div class="contact-method-label">Email</div>
+          <div class="contact-method-value">ultimacharizard256@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div>
+          <div class="contact-method-label">Discord</div>
+          <div class="contact-method-value">Not_Gible</div>
+        </div>
+      </div>
+      <p style="font-size:15px; color:var(--muted); font-style:italic; line-height:1.7; margin-top:8px;">
+        I typically reply within a few hours. Tell me about your project —
+        what you're making, what you need, and when you need it by.
+      </p>
+    </div>
+    <form action="mailto:ultimacharizard256@gmail.com" method="post" enctype="text/plain">
+      <input type="text" name="name" placeholder="Your name" required>
+      <input type="email" name="email" placeholder="Your email" required>
+      <textarea name="message" placeholder="Tell me about your project..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Gible</div>
+  <div>© 2026 · All rights reserved</div>
+  <div>Video Editor &amp; Designer</div>
+</footer>
+
+<script>
+/* ── EMBERS ── */
+const emberContainer = document.getElementById('embers');
+for (let i = 0; i < 18; i++) {
+  const e = document.createElement('div');
+  e.className = 'ember';
+  const size = Math.random() * 4 + 2;
+  Object.assign(e.style, {
+    width: size + 'px', height: size + 'px',
+    left: Math.random() * 100 + 'vw',
+    bottom: '-10px',
+    animationDuration: (Math.random() * 8 + 6) + 's',
+    animationDelay: (Math.random() * 8) + 's',
+  });
+  emberContainer.appendChild(e);
+}
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ── HERO TITLE LETTER REVEAL ── */
+(function() {
+  const el = document.getElementById('heroName');
+  const text = el.textContent;
+  el.innerHTML = '';
+  [...text].forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = ch === ' ' ? ' ' : ch;
+    span.style.animationDelay = (0.1 + i * 0.1) + 's';
+    el.appendChild(span);
+  });
+})();
+
+/* ── SCROLL REVEAL ── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ── SECTION EYEBROW LINE DRAW ── */
+const eyebrowObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('drawn');
+      eyebrowObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.section-eyebrow').forEach(el => eyebrowObserver.observe(el));
+
+/* ── CURSOR EMBER TRAIL ── */
+let lastEmber = 0;
+document.addEventListener('mousemove', e => {
+  const now = Date.now();
+  if (now - lastEmber < 60) return;
+  lastEmber = now;
+  const ember = document.createElement('div');
+  ember.className = 'cursor-ember';
+  const size = Math.random() * 5 + 3;
+  const hue = Math.random() > 0.5 ? '#CD1C10' : '#F7C04A';
+  Object.assign(ember.style, {
+    left: e.clientX + (Math.random() * 10 - 5) + 'px',
+    top:  e.clientY + (Math.random() * 10 - 5) + 'px',
+    width: size + 'px', height: size + 'px',
+    background: hue,
+    boxShadow: '0 0 ' + (size * 2) + 'px ' + hue,
+  });
+  document.body.appendChild(ember);
+  ember.addEventListener('animationend', () => ember.remove());
+});
+
+</script>
+
+</body>
+</html>
